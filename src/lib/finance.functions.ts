@@ -5,7 +5,7 @@ import { format, startOfMonth, endOfMonth, subMonths, parseISO } from "date-fns"
 import { ptBR } from "date-fns/locale";
 
 const customerSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: z.preprocess((v) => (v === "" || v === null ? undefined : v), z.string().uuid().optional()),
   name: z.string().min(1),
   email: z.string().email().optional().or(z.literal("")),
   phone: z.string().optional().or(z.literal("")),
@@ -14,7 +14,7 @@ const customerSchema = z.object({
 });
 
 const transactionSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: z.preprocess((v) => (v === "" || v === null ? undefined : v), z.string().uuid().optional()),
   customer_id: z.string().uuid().optional().or(z.literal("")),
   category_id: z.string().uuid().optional().or(z.literal("")),
   type: z.enum(["income", "expense"]),
@@ -212,7 +212,7 @@ export const createCustomer = createServerFn({ method: "POST" })
 
 export const updateCustomer = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) => customerSchema.required({ id: true }).parse(data))
+  .inputValidator((data) => customerSchema.extend({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
     const { id, ...rest } = data;
     const { error } = await context.supabase
@@ -269,7 +269,7 @@ export const createTransaction = createServerFn({ method: "POST" })
 
 export const updateTransaction = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) => transactionSchema.required({ id: true }).parse(data))
+  .inputValidator((data) => transactionSchema.extend({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
     const { id, ...rest } = data;
     const payload: any = { ...rest };
