@@ -5,7 +5,7 @@ import { format, startOfMonth, endOfMonth, subMonths, parseISO } from "date-fns"
 import { ptBR } from "date-fns/locale";
 
 const customerSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: z.preprocess((v) => (v === "" || v === null ? undefined : v), z.string().uuid().optional()),
   name: z.string().min(1),
   email: z.string().email().optional().or(z.literal("")),
   phone: z.string().optional().or(z.literal("")),
@@ -14,7 +14,7 @@ const customerSchema = z.object({
 });
 
 const transactionSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: z.preprocess((v) => (v === "" || v === null ? undefined : v), z.string().uuid().optional()),
   customer_id: z.string().uuid().optional().or(z.literal("")),
   category_id: z.string().uuid().optional().or(z.literal("")),
   type: z.enum(["income", "expense"]),
