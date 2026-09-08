@@ -78,14 +78,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "FinPME — Gestão financeira para PMEs" },
+      { name: "description", content: "FinPME: DRE automática, controle de clientes, receitas, despesas e relatórios para PMEs." },
+      { name: "author", content: "FinPME" },
+      { property: "og:title", content: "FinPME — Gestão financeira para PMEs" },
+      { property: "og:description", content: "FinPME: DRE automática, controle de clientes, receitas, despesas e relatórios para PMEs." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@FinPME" },
     ],
     links: [
       {
