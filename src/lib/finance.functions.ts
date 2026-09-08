@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { format, startOfMonth, endOfMonth, subMonths, parseISO } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 const customerSchema = z.object({
   id: z.string().uuid().optional(),
@@ -121,7 +122,7 @@ export const getMonthlyEvolution = createServerFn({ method: "GET" })
         .filter((r) => r.type === "expense" && r.status === "paid")
         .reduce((acc, r) => acc + Number(r.amount), 0);
       result.push({
-        month: format(m, "MMM/yy", { locale: { code: "pt-BR" } as any }),
+        month: format(m, "MMM/yy", { locale: ptBR }),
         income,
         expense,
       });
@@ -318,7 +319,7 @@ export const getDRE = createServerFn({ method: "GET" })
     const resultadoLiquido = receitaBruta - despesasOperacionais;
 
     return {
-      period: format(now, "MMMM 'de' yyyy", { locale: { code: "pt-BR" } as any }),
+      period: format(now, "MMMM 'de' yyyy", { locale: ptBR }),
       receitaBruta,
       despesasOperacionais,
       resultadoLiquido,
