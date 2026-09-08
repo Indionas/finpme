@@ -346,3 +346,23 @@ export const getAgingReport = createServerFn({ method: "GET" })
 
     return Object.values(byCustomer).sort((a, b) => b.toReceive - a.toReceive);
   });
+
+const profileSchema = z.object({
+  full_name: z.string().optional().or(z.literal("")),
+  company_name: z.string().optional().or(z.literal("")),
+});
+
+export const updateProfile = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) => profileSchema.parse(data))
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("profiles")
+      .update({
+        full_name: data.full_name || null,
+        company_name: data.company_name || null,
+      })
+      .eq("id", context.userId);
+    if (error) throw error;
+    return { ok: true };
+  });
