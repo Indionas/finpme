@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { updateProfile } from "@/lib/finance.functions";
 import { useServerFn } from "@tanstack/react-start";
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "@/hooks/use-theme";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   component: SettingsPage,
@@ -24,6 +26,7 @@ function SettingsPage() {
   const [fullName, setFullName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [loading, setLoading] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   const updateFn = useServerFn(updateProfile);
 
@@ -72,6 +75,28 @@ function SettingsPage() {
               Salvar alterações
             </Button>
           </form>
+        </CardContent>
+      </Card>
+
+      <Card className="max-w-xl">
+        <CardHeader>
+          <CardTitle>Aparência</CardTitle>
+          <CardDescription>Escolha entre tema claro e escuro.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <Label htmlFor="darkMode">Tema escuro</Label>
+              <p className="text-sm text-muted-foreground">
+                Reduz o brilho da tela em ambientes com pouca luz.
+              </p>
+            </div>
+            <Switch
+              id="darkMode"
+              checked={theme === "dark"}
+              onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+            />
+          </div>
         </CardContent>
       </Card>
     </div>
