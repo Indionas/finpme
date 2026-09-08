@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { LogOut, User } from "lucide-react";
+import { LogOut, Moon, Sun, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,10 +11,12 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTheme } from "@/hooks/use-theme";
 
 export function AppHeader() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { theme, toggleTheme } = useTheme();
 
   const handleSignOut = async () => {
     await queryClient.cancelQueries();
@@ -32,6 +34,11 @@ export function AppHeader() {
           FinPME
         </span>
       </div>
+      <div className="flex items-center gap-1">
+        <Button variant="ghost" size="icon" className="rounded-full" onClick={toggleTheme}>
+          {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          <span className="sr-only">Alternar tema</span>
+        </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="rounded-full">
@@ -49,6 +56,7 @@ export function AppHeader() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      </div>
     </header>
   );
 }
