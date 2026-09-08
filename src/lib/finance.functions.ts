@@ -212,7 +212,7 @@ export const createCustomer = createServerFn({ method: "POST" })
 
 export const updateCustomer = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) => customerSchema.required({ id: true }).parse(data))
+  .inputValidator((data) => customerSchema.extend({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
     const { id, ...rest } = data;
     const { error } = await context.supabase
@@ -269,7 +269,7 @@ export const createTransaction = createServerFn({ method: "POST" })
 
 export const updateTransaction = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) => transactionSchema.required({ id: true }).parse(data))
+  .inputValidator((data) => transactionSchema.extend({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
     const { id, ...rest } = data;
     const payload: any = { ...rest };
